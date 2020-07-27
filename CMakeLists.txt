@@ -3,7 +3,12 @@ cmake_minimum_required(VERSION 3.10)
 project(openGL)
 
 include_directories(include)
-find_library(OPENGLLIB opengl64 REQUIRED)
+
+# To enforce static library linking of glew we add this
+# preprocessor defintion.
+add_definitions(-DGLEW_STATIC)
+
+find_library(OPENGLLIB OpenGL REQUIRED)
 
 if (WIN32)
     include_directories("C:/Program Files/GLFW/include")
@@ -12,7 +17,8 @@ if (WIN32)
 endif (WIN32)
 
 if (UNIX)
-    find_library(GLFWLIB glfw3 REQUIRED)
+    find_library(GLEWLIB GLEW REQUIRED)
+    find_library(GLFWLIB glfw REQUIRED)
     include_directories(${GLFW3_LIBS})
 endif (UNIX)
 
@@ -20,4 +26,4 @@ endif (UNIX)
 
 # main GLFW window.
 add_executable(main src/main.cc)
-target_link_libraries(main ${GLFWLIB} ${OPENGLLIB})
+target_link_libraries(main ${GLFWLIB} ${OPENGLLIB} ${GLEWLIB})
