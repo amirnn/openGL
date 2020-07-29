@@ -25,5 +25,9 @@ endif (UNIX)
 
 
 # main GLFW window.
-add_executable(main src/main.cc)
+add_executable(main src/1.main.cc)
 target_link_libraries(main ${GLFWLIB} ${OPENGLLIB} ${GLEWLIB})
+
+# vertex buffs and shaders
+add_executable(vertexBuffer src/2.vertexBuffers.cc)
+target_link_libraries(vertexBuffer ${GLFWLIB} ${OPENGLLIB} ${GLEWLIB})

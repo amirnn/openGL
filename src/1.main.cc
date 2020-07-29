@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+// Setup 
+
 int main()
 {
     GLFWwindow* window;
