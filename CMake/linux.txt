@@ -1,4 +1,5 @@
-message("Running on a Linux platform.")    
+message("Running on a Linux platform.")
+
 find_library(GLEW_LIB GLEW REQUIRED)
 find_library(GLFW_LIB glfw REQUIRED)
 include_directories(${GLFW3_LIBS})
