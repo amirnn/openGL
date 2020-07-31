@@ -10,13 +10,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Find OpenGL
 find_library(OPENGL_LIB OpenGL REQUIRED)
 
+# Create print library
+# add_library(print src/print.cc include/print.h)
+
 if (WIN32)
-    include(CMake/windows.txt)
+    include(CMakeModules/windows.cmake)
 
 elseif(UNIX AND NOT APPLE)
-    include(CMake/linux.txt)
+    include(CMakeModules/linux.cmake)
 
 elseif(APPLE)
-    include(CMake/macos.txt)
+    include(CMakeModules/macos.cmake)
 
 endif()

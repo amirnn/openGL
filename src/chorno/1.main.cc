@@ -1,9 +1,15 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <array>
+#include "print.h"
+
+// typedef std::string str;
+using std::string;
+using std::to_string;
+using namespace std::string_literals;
 
 // Setup 
-
 int main()
 {
     GLFWwindow* window;
@@ -23,11 +29,13 @@ int main()
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    // Initilize glew
     if(glewInit() != GLEW_OK)
         std::cout << "Error glewInit" <<std::endl;
 
     // To print out the opengl version with the vendor.
     std::cout << glGetString(GL_VERSION) << std::endl;
+  
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
