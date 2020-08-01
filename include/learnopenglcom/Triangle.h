@@ -25,7 +25,6 @@ public:
         initGLEW();
         setWindowAttributes();
         mainLoop();
-        cleanup();
     };
     virtual ~Triangle();
 };

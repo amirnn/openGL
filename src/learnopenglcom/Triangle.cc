@@ -6,6 +6,7 @@ Triangle::Triangle(/* args */)
 
 Triangle::~Triangle()
 {
+    cleanup();
 }
 
 void Triangle::initWindow()
