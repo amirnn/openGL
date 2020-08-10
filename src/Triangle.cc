@@ -83,7 +83,7 @@ namespace Triangle
         // Generate buffer id;
         glGenBuffers(1, &vbo);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, verticies.sizeInBytes, verticies.data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, verticies.sizeInBytes, verticies.data.data(), GL_STATIC_DRAW);
     }
 
     // Setup shaders.
