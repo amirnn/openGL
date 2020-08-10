@@ -1,9 +1,9 @@
-#include "learnopenglcom/Triangle.h"
+#include "Triangle.h"
 #include <stdlib.h>
 
 int main(int argc, char const *argv[])
 {
-    Triangle app;
+    Triangle::Triangle app;
     try
     {
         app.run();
