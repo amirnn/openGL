@@ -20,9 +20,9 @@ namespace Triangle
         std::string fragmentShaderSourceCode;
         uint linkedShaderProgram;
         GLFWwindow *window;
-        uint vao;
-        uint vbo;
-        uint ebo;
+        uint vao; //vertex array object
+        uint vbo; //vertex buffer object
+        uint ebo;  //element buffer object
         void initWindow();
         void initGLFW();
         void initGLEW();

@@ -152,6 +152,7 @@ namespace Triangle
     }
     void Triangle::mainLoop()
     {
+        //Bind Vertex Arry
         glBindVertexArray(vao);
         glUseProgram(linkedShaderProgram);
         // Draw
