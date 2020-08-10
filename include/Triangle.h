@@ -6,36 +6,30 @@
 #include "windowHandeling.h"
 #include <exception>
 #include <array>
+#include <vector>
 #include <fstream>
 #include <sstream>
+#include <functional>
 
 namespace Triangle
 {
     class Triangle
     {
     private:
-        struct Verticies
-        {
-            // within visible region of OpenGL
-            std::array<double,9> data = {
-                -0.5, -0.5, 0.0,
-                0.5, -0.5, 0.0,
-                0.0, 0.5, 0.0};
-            unsigned sizeInBytes = data.size() * sizeof(double);
-        } verticies;
-
         std::string vertexShaderSourceCode;
         std::string fragmentShaderSourceCode;
         uint linkedShaderProgram;
         GLFWwindow *window;
         uint vao;
         uint vbo;
+        uint ebo;
         void initWindow();
         void initGLFW();
         void initGLEW();
         void setWindowAttributes();
         void configureObject();
         void upLoadVerticies();
+        void upLoadIndicies();
         void setUpShaders();
         void setUpMemoryLayout();
         void mainLoop();
@@ -55,6 +49,17 @@ namespace Triangle
             setUpShaders();
             mainLoop();
         };
+        struct Verticies
+        {
+            // within visible region of OpenGL
+            std::vector<double> data = {
+                -0.5, -0.5, 0.0,
+                0.5, -0.5, 0.0,
+                0.0, 0.5, 0.0};
+            unsigned sizeInBytes = data.size() * sizeof(double);
+            std::vector<uint> indices;
+            std::function<uint()> getIndiciesSizeinBytes = [&]()->uint{ return indices.size() * sizeof(uint);};
+        } verticies;
         virtual ~Triangle();
     };
 } // namespace Triangle

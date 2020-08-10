@@ -21,3 +21,7 @@ target_link_libraries(helloWindow glfw OpenGL::GL GLEW::GLEW)
 set(Triangle src/Triangle.cc include/Triangle.h)
 add_executable(Triangle src/learnopenglcom/2.TriangleWindow.cc ${Triangle} ${WinHandling} ${Print})
 target_link_libraries(Triangle glfw OpenGL::GL GLEW::GLEW)
+
+# 3. Rectangle
+add_executable(Rectangle src/learnopenglcom/3.Rectangle.cc ${Triangle} ${WinHandling} ${Print})
+target_link_libraries(Rectangle glfw OpenGL::GL GLEW::GLEW)
