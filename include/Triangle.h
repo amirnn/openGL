@@ -28,11 +28,13 @@ namespace Triangle
         std::string fragmentShaderSourceCode;
         uint linkedShaderProgram;
         GLFWwindow *window;
+        uint vao;
         uint vbo;
         void initWindow();
         void initGLFW();
         void initGLEW();
         void setWindowAttributes();
+        void configureObject();
         void upLoadVerticies();
         void setUpShaders();
         void setUpMemoryLayout();
@@ -49,9 +51,8 @@ namespace Triangle
             initWindow();
             initGLEW();
             setWindowAttributes();
-            upLoadVerticies();
+            configureObject();
             setUpShaders();
-            setUpMemoryLayout();
             mainLoop();
         };
         virtual ~Triangle();

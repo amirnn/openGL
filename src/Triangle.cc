@@ -20,8 +20,8 @@ namespace Triangle
 
     Triangle::Triangle(/* args */)
     {
-        std::string vertexShaderCodePath{"/Users/amirnourinia/Developer/openGL/src/shaders/triangleVertexShader.gls"};
-        std::string framgentShaderCodePath{"/Users/amirnourinia/Developer/openGL/src/shaders/triangleFramgmentShader.gls"};
+        std::string vertexShaderCodePath{"/Users/amirnourinia/Developer/openGL/src/shaders/triangleVertexShader.glsl"};
+        std::string framgentShaderCodePath{"/Users/amirnourinia/Developer/openGL/src/shaders/triangleFramgmentShader.glsl"};
         shaderCodeReader(vertexShaderSourceCode, vertexShaderCodePath);
         shaderCodeReader(fragmentShaderSourceCode, framgentShaderCodePath);
     }
@@ -40,7 +40,7 @@ namespace Triangle
         }
         // set context to current window.
         glfwMakeContextCurrent(window);
-    };
+    }
     void Triangle::initGLFW()
     {
         if (glfwInit() == GLFW_FALSE)
@@ -66,6 +66,17 @@ namespace Triangle
         // fix handles:  here, resizing callback
         glfwSetFramebufferSizeCallback(window, windowHandling::framebuffer_size_callback);
     }
+    void Triangle::configureObject(){
+        
+        // Generate vertex array object to wrap the configurations.
+        glGenVertexArrays(1,&vao);
+        glBindVertexArray(vao);
+        upLoadVerticies();
+        setUpMemoryLayout();
+        // Unbind the vao, bind it when you want to use it.
+        glBindVertexArray(0);
+    }
+
     // Load the verticies onto GPU
     void Triangle::upLoadVerticies()
     {
@@ -90,7 +101,7 @@ namespace Triangle
         glCompileShader(vertexShader);
         glCompileShader(fragmentShader);
 
-        int vstatus, fstatus;
+        int vstatus, fstatus, lstatus;
         glGetShaderiv(vertexShader,GL_COMPILE_STATUS,&vstatus);
         glGetShaderiv(fragmentShader,GL_COMPILE_STATUS,&fstatus);
         if( vstatus == GL_TRUE && fstatus == GL_TRUE )
@@ -107,7 +118,14 @@ namespace Triangle
         glAttachShader(linkedShaderProgram, vertexShader);
         glAttachShader(linkedShaderProgram, fragmentShader);
         glLinkProgram(linkedShaderProgram);
-
+        glGetProgramiv(linkedShaderProgram, GL_LINK_STATUS, &lstatus);
+        if(lstatus)
+            std::cout << "Shaders linked successfully." << std::endl;
+        else {
+        char infoLog[512];
+        glGetProgramInfoLog(linkedShaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+        }
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
     }
@@ -115,19 +133,23 @@ namespace Triangle
     void Triangle::setUpMemoryLayout(){
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(double), (void*)0);
         glEnableVertexAttribArray(0);
-
-        glUseProgram(linkedShaderProgram);
     }
     void Triangle::mainLoop()
     {   
+        glBindVertexArray(vao);
+        glUseProgram(linkedShaderProgram);
+        // Draw
+        // glDrawArrays(GL_TRIANGLES,0,3);
         // Render Loop
         while (!glfwWindowShouldClose(window))
         {
             // Process Inputs
             windowHandling::processInput(window);
+            // Draw
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
-            glDrawBuffer(GL_TRIANGLES);
+            glDrawArrays(GL_TRIANGLES,0,3);
+
             // Check and call events and swap the buffers
             glfwSwapBuffers(window);
             glfwPollEvents();
@@ -142,13 +164,18 @@ namespace Triangle
         {
             if (GLEW_OK != err)
                 throw std::runtime_error("Error initializing GLEW.");
-
-            fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+            
+            // To print out the opengl version with the vendor.
+            std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+            fprintf(stdout, "GLEW: Using GLEW %s\n", glewGetString(GLEW_VERSION));
         }
     }
     void Triangle::cleanup()
     {
         // Clear resources.
+        glDeleteVertexArrays(1,&vao);
+        glDeleteBuffers(1,&vbo);
+        glDeleteProgram(linkedShaderProgram);
         glfwTerminate();
     }
     void Triangle::createInstance() {}
