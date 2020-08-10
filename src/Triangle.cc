@@ -74,7 +74,7 @@ namespace Triangle
         upLoadVerticies();
         setUpMemoryLayout();
         // Unbind the vao, bind it when you want to use it.
-        glBindVertexArray(0);
+        // glBindVertexArray(0);
     }
 
     // Load the verticies onto GPU
@@ -83,7 +83,7 @@ namespace Triangle
         // Generate buffer id;
         glGenBuffers(1, &vbo);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, verticies.sizeInBytes, verticies.data.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, verticies.sizeInBytes, verticies.data, GL_STATIC_DRAW);
     }
 
     // Setup shaders.
@@ -131,7 +131,7 @@ namespace Triangle
     }
 
     void Triangle::setUpMemoryLayout(){
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(double), (void*)0);
+        glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(double), (void*)0);
         glEnableVertexAttribArray(0);
     }
     void Triangle::mainLoop()

@@ -17,11 +17,11 @@ namespace Triangle
         struct Verticies
         {
             // within visible region of OpenGL
-            std::array<double, 9> data{
+            double data[9] = {
                 -0.5, -0.5, 0.0,
                 0.5, -0.5, 0.0,
                 0.0, 0.5, 0.0};
-            unsigned sizeInBytes = data.size() * sizeof(double);
+            unsigned sizeInBytes = sizeof(data);
         } verticies;
 
         std::string vertexShaderSourceCode;
