@@ -24,8 +24,8 @@ namespace Triangle
         std::string framgentShaderCodePath;
         #if defined (___APPLE__)
         {
-            vertexShaderCodePath="/Users/amirnourinia/Developer/openGL/src/shaders/triangleVertexShader.glsl";
-            framgentShaderCodePath="/Users/amirnourinia/Developer/openGL/src/shaders/triangleFramgmentShader.glsl";
+            vertexShaderCodePath="../src/shaders/triangleVertexShader.glsl";
+            framgentShaderCodePath="../src/shaders/triangleFramgmentShader.glsl";
         }
         #endif
         #if defined(unix) || defined(__unix__) || defined(__unix)
