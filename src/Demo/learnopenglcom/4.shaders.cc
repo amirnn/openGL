@@ -1,7 +1,6 @@
 #include "Triangle.h"
-#include <GL/glew.h>
 #include <cmath>
-#include <iostream>
+
 
 int main(int argc, char const *argv[]) {
   std::string vertexShaderCodePath = "../../src/shaders/1.vertexShader.glsl";

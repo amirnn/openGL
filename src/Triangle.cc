@@ -2,7 +2,8 @@
 
 namespace Triangle
 {
-    void Triangle::shaderCodeReader(std::string &shaderCode, const std::string &file_path)
+    void Triangle::shaderCodeReader(std::string &shaderCode,
+                                    const std::string &file_path)
     {
         // Read the Vertex Shader code from the file
         std::string VertexShaderCode;
@@ -15,19 +16,18 @@ namespace Triangle
         sstr << VertexShaderStream.rdbuf();
         shaderCode = sstr.str();
         VertexShaderStream.close();
-        // std::cout << "Shader code read successfully: " << std::endl << shaderCode << std::endl;
+        // std::cout << "Shader code read successfully: " << std::endl << shaderCode
+        // << std::endl;
     }
 
-    Triangle::Triangle(std::string shaderVertexPath, std::string fragmentVertexPath)
-    {   
+    Triangle::Triangle(std::string shaderVertexPath,
+                       std::string fragmentVertexPath)
+    {
         shaderCodeReader(vertexShaderSourceCode, shaderVertexPath);
         shaderCodeReader(fragmentShaderSourceCode, fragmentVertexPath);
     }
 
-    Triangle::~Triangle()
-    {
-        cleanup();
-    }
+    Triangle::~Triangle() { cleanup(); }
 
     void Triangle::initWindow()
     {
@@ -63,7 +63,8 @@ namespace Triangle
         glViewport(0, 0, 800, 600);
 
         // fix handles:  here, resizing callback
-        glfwSetFramebufferSizeCallback(window, windowHandling::framebuffer_size_callback);
+        glfwSetFramebufferSizeCallback(window,
+                                       windowHandling::framebuffer_size_callback);
     }
     void Triangle::configureObject()
     {
@@ -84,16 +85,18 @@ namespace Triangle
         // Generate buffer id;
         glGenBuffers(1, &vbo);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, verticies.sizeInBytes, verticies.data.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, verticies.sizeInBytes, verticies.data.data(),
+                     GL_STATIC_DRAW);
     }
-    // copy our index array in a element buffer for OpenGL to use
+    // copy index array in an element buffer for OpenGL to use
     void Triangle::upLoadIndicies()
     {
         if (!verticies.indices.empty())
         {
             glGenBuffers(1, &ebo);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, verticies.getIndiciesSizeinBytes(), verticies.indices.data(), GL_STATIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, verticies.getIndiciesSizeinBytes(),
+                         verticies.indices.data(), GL_STATIC_DRAW);
         }
     }
 
@@ -144,16 +147,18 @@ namespace Triangle
         glDeleteShader(fragmentShader);
     }
 
-
     // Memory layout
     void Triangle::setUpMemoryLayout()
     {
-        glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(double), (void *)0);
+        // determine data type based on TypeOfData Macro defined in Triangle.h
+        uint glDataType = sizeof(TypeOfData) == sizeof(double) ? GL_DOUBLE : GL_FLOAT;
+        glVertexAttribPointer(0, 3, glDataType, GL_FALSE, 3 * sizeof(TypeOfData),
+                              (void *)0);
         glEnableVertexAttribArray(0);
     }
     void Triangle::mainLoop()
     {
-        //Bind Vertex Arry
+        // Bind Vertex Arry
         glUseProgram(linkedShaderProgram);
         glBindVertexArray(vao);
         // Draw
@@ -164,8 +169,9 @@ namespace Triangle
             // Process Inputs
             windowHandling::processInput(window);
             // Call runable functions
-            if(!runable.empty()){
-                for(const auto& func : runable)
+            if (!runable.empty())
+            {
+                for (const auto &func : runable)
                     func();
             }
             // Draw
@@ -174,7 +180,8 @@ namespace Triangle
             if (verticies.indices.empty())
                 glDrawArrays(GL_TRIANGLES, 0, 3);
             else
-                glDrawElements(GL_TRIANGLES, verticies.indices.size(), GL_UNSIGNED_INT, 0);
+                glDrawElements(GL_TRIANGLES, verticies.indices.size(), GL_UNSIGNED_INT,
+                               0);
             // Check and call events and swap the buffers
             glfwSwapBuffers(window);
             glfwPollEvents();
