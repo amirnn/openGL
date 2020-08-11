@@ -25,3 +25,7 @@ target_link_libraries(Triangle glfw OpenGL::GL GLEW::GLEW)
 # 3. Rectangle
 add_executable(Rectangle src/learnopenglcom/3.Rectangle.cc ${Triangle} ${WinHandling} ${Print})
 target_link_libraries(Rectangle glfw OpenGL::GL GLEW::GLEW)
+
+# 4. Shaders
+add_executable(Shaders src/learnopenglcom/4.shaders.cc ${WinHandling} ${Print})
+target_link_libraries(Shaders glfw OpenGL::GL GLEW::GLEW)
