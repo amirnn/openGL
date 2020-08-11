@@ -50,11 +50,12 @@ namespace Triangle
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         // On macos we need this check
-        if (__APPLE__)
+#if defined(___APPLE__)
         {
             print::printLine("Platform Detected: MacOS");
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         }
+#endif
     }
 
     void Triangle::setWindowAttributes()
