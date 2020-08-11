@@ -38,7 +38,7 @@ namespace Triangle
         void shaderCodeReader(std::string& shaderCode, const std::string& filePath);
 
     public:
-        Triangle();
+        Triangle(std::string shaderVertexPath, std::string fragmentVertexPath);
         void run()
         {
             initGLFW();

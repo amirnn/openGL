@@ -2,7 +2,9 @@
 
 int main(int argc, char const *argv[])
 {
-    Triangle::Triangle app;
+    std::string vertexShaderCodePath="../src/shaders/triangleVertexShader.glsl";
+    std::string framgentShaderCodePath="../src/shaders/triangleFramgmentShader.glsl";
+    Triangle::Triangle app(vertexShaderCodePath,framgentShaderCodePath);
     app.verticies.data.clear();
     app.verticies.data = {
         0.5, 0.5, 0.0,   // top right

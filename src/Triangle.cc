@@ -18,25 +18,10 @@ namespace Triangle
         // std::cout << "Shader code read successfully: " << std::endl << shaderCode << std::endl;
     }
 
-    Triangle::Triangle(/* args */)
+    Triangle::Triangle(std::string shaderVertexPath, std::string fragmentVertexPath)
     {   
-        std::string vertexShaderCodePath;
-        std::string framgentShaderCodePath;
-        #if defined (___APPLE__)
-        {
-            vertexShaderCodePath="../src/shaders/triangleVertexShader.glsl";
-            framgentShaderCodePath="../src/shaders/triangleFramgmentShader.glsl";
-        }
-        #endif
-        #if defined(unix) || defined(__unix__) || defined(__unix)
-        {
-            vertexShaderCodePath="../src/shaders/triangleVertexShader.glsl";
-            framgentShaderCodePath="../src/shaders/triangleFramgmentShader.glsl";
-        }
-        #endif
-
-        shaderCodeReader(vertexShaderSourceCode, vertexShaderCodePath);
-        shaderCodeReader(fragmentShaderSourceCode, framgentShaderCodePath);
+        shaderCodeReader(vertexShaderSourceCode, shaderVertexPath);
+        shaderCodeReader(fragmentShaderSourceCode, fragmentVertexPath);
     }
 
     Triangle::~Triangle()

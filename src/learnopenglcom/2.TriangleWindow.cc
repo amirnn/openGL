@@ -2,8 +2,10 @@
 #include <stdlib.h>
 
 int main(int argc, char const *argv[])
-{
-    Triangle::Triangle app;
+{   
+    std::string vertexShaderCodePath="../src/shaders/triangleVertexShader.glsl";
+    std::string framgentShaderCodePath="../src/shaders/triangleFramgmentShader.glsl";
+    Triangle::Triangle app(vertexShaderCodePath,framgentShaderCodePath);
     try
     {
         app.run();
