@@ -19,9 +19,22 @@ namespace Triangle
     }
 
     Triangle::Triangle(/* args */)
-    {
-        std::string vertexShaderCodePath{"/Users/amirnourinia/Developer/openGL/src/shaders/triangleVertexShader.glsl"};
-        std::string framgentShaderCodePath{"/Users/amirnourinia/Developer/openGL/src/shaders/triangleFramgmentShader.glsl"};
+    {   
+        std::string vertexShaderCodePath;
+        std::string framgentShaderCodePath;
+        #if defined (___APPLE__)
+        {
+            vertexShaderCodePath="/Users/amirnourinia/Developer/openGL/src/shaders/triangleVertexShader.glsl";
+            framgentShaderCodePath="/Users/amirnourinia/Developer/openGL/src/shaders/triangleFramgmentShader.glsl";
+        }
+        #endif
+        #if defined(unix) || defined(__unix__) || defined(__unix)
+        {
+            vertexShaderCodePath="../src/shaders/triangleVertexShader.glsl";
+            framgentShaderCodePath="../src/shaders/triangleFramgmentShader.glsl";
+        }
+        #endif
+
         shaderCodeReader(vertexShaderSourceCode, vertexShaderCodePath);
         shaderCodeReader(fragmentShaderSourceCode, framgentShaderCodePath);
     }
