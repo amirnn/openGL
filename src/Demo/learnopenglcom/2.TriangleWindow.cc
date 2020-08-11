@@ -3,8 +3,8 @@
 
 int main(int argc, char const *argv[])
 {   
-    std::string vertexShaderCodePath="../src/shaders/triangleVertexShader.glsl";
-    std::string framgentShaderCodePath="../src/shaders/triangleFramgmentShader.glsl";
+    std::string vertexShaderCodePath="../../src/shaders/triangleVertexShader.glsl";
+    std::string framgentShaderCodePath="../../src/shaders/triangleFramgmentShader.glsl";
     Triangle::Triangle app(vertexShaderCodePath,framgentShaderCodePath);
     try
     {

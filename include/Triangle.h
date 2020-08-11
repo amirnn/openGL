@@ -18,7 +18,6 @@ namespace Triangle
     private:
         std::string vertexShaderSourceCode;
         std::string fragmentShaderSourceCode;
-        uint linkedShaderProgram;
         GLFWwindow *window;
         uint vao; //vertex array object
         uint vbo; //vertex buffer object
@@ -38,7 +37,12 @@ namespace Triangle
         void shaderCodeReader(std::string& shaderCode, const std::string& filePath);
 
     public:
+        uint linkedShaderProgram;
+        
+        // Constructors.
         Triangle(std::string shaderVertexPath, std::string fragmentVertexPath);
+        virtual ~Triangle();
+        
         void run()
         {
             initGLFW();
@@ -60,6 +64,9 @@ namespace Triangle
             std::vector<uint> indices;
             std::function<uint()> getIndiciesSizeinBytes = [&]()->uint{ return indices.size() * sizeof(uint);};
         } verticies;
-        virtual ~Triangle();
+        
+        // Using this I can inject functionality into the main loop.
+        std::vector<std::function<void()>> runable;
+
     };
 } // namespace Triangle

@@ -144,6 +144,8 @@ namespace Triangle
         glDeleteShader(fragmentShader);
     }
 
+
+    // Memory layout
     void Triangle::setUpMemoryLayout()
     {
         glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(double), (void *)0);
@@ -152,8 +154,8 @@ namespace Triangle
     void Triangle::mainLoop()
     {
         //Bind Vertex Arry
-        glBindVertexArray(vao);
         glUseProgram(linkedShaderProgram);
+        glBindVertexArray(vao);
         // Draw
         // glDrawArrays(GL_TRIANGLES,0,3);
         // Render Loop
@@ -161,6 +163,11 @@ namespace Triangle
         {
             // Process Inputs
             windowHandling::processInput(window);
+            // Call runable functions
+            if(!runable.empty()){
+                for(const auto& func : runable)
+                    func();
+            }
             // Draw
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
