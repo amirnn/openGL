@@ -29,3 +29,7 @@ target_link_libraries(DrawRectangle glfw OpenGL::GL GLEW::GLEW)
 # 4. Shaders
 add_executable(ShadersDemo src/Demo/learnopenglcom/4.shaders.cc ${Triangle} ${WinHandling} ${Print})
 target_link_libraries(ShadersDemo glfw OpenGL::GL GLEW::GLEW)
+
+# 5. Shaders
+add_executable(ShadersDemoColorEdge src/Demo/learnopenglcom/5.shaders.cc ${Triangle} ${WinHandling} ${Print})
+target_link_libraries(ShadersDemoColorEdge glfw OpenGL::GL GLEW::GLEW)

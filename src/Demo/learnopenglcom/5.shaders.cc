@@ -3,20 +3,19 @@
 
 
 int main(int argc, char const *argv[]) {
-  std::string vertexShaderCodePath = "../../src/shaders/1.vertexShader.glsl";
-  std::string framgentShaderCodePath = "../../src/shaders/1.fragmentShader.glsl";
-  Triangle::Triangle app(vertexShaderCodePath, framgentShaderCodePath);
+  std::string vertexShaderCodePath = "../../src/shaders/2.vertexShader.glsl";
+  std::string framgentShaderCodePath = "../../src/shaders/2.fragmentShader.glsl";
+  Triangle::Triangle app(vertexShaderCodePath, framgentShaderCodePath, 6U);
   app.verticies->data.clear();
   app.verticies->data = {
-      0.5,  0.5,  0.0, // top right
-      0.5,  -0.5, 0.0, // bottom right
-      -0.5, -0.5, 0.0, // bottom left
-      -0.5, 0.5,  0.0  // top left
+    // positions         // colors
+     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
   };
   app.verticies->indices = {
       // note that we start from 0!
-      0, 1, 2, // first triangle
-      0, 2, 3  // second triangle
+      0, 1, 2
   };
   app.runable.push_back([&]() {
     double timeValue = glfwGetTime();
