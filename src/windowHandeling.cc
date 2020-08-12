@@ -1,5 +1,4 @@
 #include "windowHandeling.h"
-
 namespace windowHandling
 {
 

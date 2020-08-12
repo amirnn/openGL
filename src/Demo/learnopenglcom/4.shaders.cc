@@ -6,19 +6,19 @@ int main(int argc, char const *argv[]) {
   std::string vertexShaderCodePath = "../../src/shaders/1.vertexShader.glsl";
   std::string framgentShaderCodePath = "../../src/shaders/1.fragmentShader.glsl";
   Triangle::Triangle app(vertexShaderCodePath, framgentShaderCodePath);
-  app.verticies->data.clear();
-  app.verticies->data = {
+  app.vertices->data.clear();
+  app.vertices->data = {
       0.5,  0.5,  0.0, // top right
       0.5,  -0.5, 0.0, // bottom right
       -0.5, -0.5, 0.0, // bottom left
       -0.5, 0.5,  0.0  // top left
   };
-  app.verticies->indices = {
+  app.vertices->indices = {
       // note that we start from 0!
       0, 1, 2, // first triangle
       0, 2, 3  // second triangle
   };
-  app.runable.push_back([&]() {
+  app.runnable.push_back([&]() {
     double timeValue = glfwGetTime();
     double greenValue = (sin(timeValue) / 2.0) + 0.5;
     int vertexColorLocation =

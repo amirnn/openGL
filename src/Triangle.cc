@@ -18,17 +18,18 @@ void Triangle::shaderCodeReader(std::string &shaderCode,
 }
 
 Triangle::Triangle(std::string shaderVertexPath, std::string fragmentVertexPath,
-                   uint numberOfAttributesPerVertex)
-    : numberOfAttributesPerVertex{numberOfAttributesPerVertex} {
-  verticies = new Verticies(numberOfAttributesPerVertex);
+                   uint numberOfGenericAttributes, uint totalCountOfVertexComponents)
+    : numberOfGenericAttributes{numberOfGenericAttributes},
+      totalCountOfVertexComponents{totalCountOfVertexComponents} {
+  vertices = new Vertices(numberOfGenericAttributes, totalCountOfVertexComponents);
   shaderCodeReader(vertexShaderSourceCode, shaderVertexPath);
   shaderCodeReader(fragmentShaderSourceCode, fragmentVertexPath);
 }
 
 Triangle::~Triangle() {
   // Delete ptr.
-  if (verticies)
-    delete verticies;
+  if (vertices)
+    delete vertices;
   cleanup();
 }
 
@@ -45,7 +46,7 @@ void Triangle::initGLFW() {
     throw std::runtime_error("Error creating initializing the GLEW.");
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   // On macos we need this check
 #if defined(___APPLE__)
@@ -70,40 +71,46 @@ void Triangle::configureObject() {
   // Generate vertex array object to wrap the configurations.
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
-  upLoadVerticies();
-  upLoadIndicies();
+  upLoadVertices();
+  upLoadIndices();
   setUpMemoryLayout();
   // Unbind the vao, bind it when you want to use it.
   glBindVertexArray(0);
 }
 
-// Load the verticies onto GPU usin a vertex buffer object
-void Triangle::upLoadVerticies() {
+// Load the vertices onto GPU using a vertex buffer object
+void Triangle::upLoadVertices() {
   // Generate buffer id;
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, verticies->sizeInBytes, verticies->data.data(),
+  glBufferData(GL_ARRAY_BUFFER, vertices->getDataSizeInBytes(), vertices->data.data(),
                GL_STATIC_DRAW);
 }
 // copy index array in an element buffer object for OpenGL to use
-void Triangle::upLoadIndicies() {
-  if (!verticies->indices.empty()) {
+void Triangle::upLoadIndices() {
+  if (!vertices->indices.empty()) {
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, verticies->getIndiciesSizeinBytes(),
-                 verticies->indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertices->getIndicesSizeInBytes(),
+                 vertices->indices.data(), GL_STATIC_DRAW);
   }
 }
 
 // Memory layout
 void Triangle::setUpMemoryLayout() {
   // determine data type based on TypeOfData Macro defined in Triangle.h
-  uint glDataType =
-      sizeof(TypeOfData) == sizeof(GLdouble) ? GL_DOUBLE : GL_FLOAT;
-  glVertexAttribPointer(0, 3, glDataType, GL_FALSE, numberOfAttributesPerVertex * sizeof(TypeOfData),
-                        (void *)0);
-  // Enable Atrribute
-  glEnableVertexAttribArray(0);
+  GLenum glDataType =
+      sizeof(TypeOfData) == sizeof(double) ? GL_DOUBLE : GL_FLOAT;
+  for (uint i = 0; i < numberOfGenericAttributes; i++){
+    uint offset = i * totalCountOfVertexComponents / numberOfGenericAttributes;
+    glVertexAttribPointer(i, 3, glDataType, GL_FALSE,
+                          totalCountOfVertexComponents * sizeof(TypeOfData),
+                          (void *) offset);
+  }
+
+  // Enable Attribute
+  for (uint i = 0; i < numberOfGenericAttributes; i++)
+    glEnableVertexAttribArray(i);
 }
 
 // Setup shaders.
@@ -153,7 +160,7 @@ void Triangle::setUpShaders() {
 void Triangle::mainLoop() {
 
   glUseProgram(linkedShaderProgram);
-  // Bind Vertex Arry
+  // Bind Vertex Array
   glBindVertexArray(vao);
   // Draw
   // glDrawArrays(GL_TRIANGLES,0,3);
@@ -161,19 +168,21 @@ void Triangle::mainLoop() {
   while (!glfwWindowShouldClose(window)) {
     // Process Inputs
     windowHandling::processInput(window);
-    // Call runable functions
-    if (!runable.empty()) {
-      for (const auto &func : runable)
+    // Call runnable functions
+    if (!runnable.empty()) {
+      for (const auto &func : runnable)
         func();
     }
     // Draw
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    if (verticies->indices.empty())
-      glDrawArrays(GL_TRIANGLES, 0, 3);
-    else
-      glDrawElements(GL_TRIANGLES, verticies->indices.size(), GL_UNSIGNED_INT,
-                     0);
+    if (vertices->indices.empty()) {
+      GLCallHelper(glDrawArrays(GL_TRIANGLES, 0, 3));
+    } else {
+      GLCallHelper(glDrawElements(GL_TRIANGLES, vertices->indices.size(),
+                                  GL_UNSIGNED_INT, nullptr));
+    }
+
     // Check and call events and swap the buffers
     glfwSwapBuffers(window);
     glfwPollEvents();
