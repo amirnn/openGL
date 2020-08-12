@@ -102,7 +102,8 @@ void Triangle::setUpMemoryLayout() {
   GLenum glDataType =
       sizeof(TypeOfData) == sizeof(double) ? GL_DOUBLE : GL_FLOAT;
   for (uint i = 0; i < numberOfGenericAttributes; i++){
-    uint offset = i * totalCountOfVertexComponents / numberOfGenericAttributes;
+//    calculate the offset between generic attributes.
+    uint offset = i * vertices->componentTypeLengthInBytes * (totalCountOfVertexComponents / numberOfGenericAttributes);
     glVertexAttribPointer(i, 3, glDataType, GL_FALSE,
                           totalCountOfVertexComponents * sizeof(TypeOfData),
                           (void *) offset);

@@ -23,9 +23,9 @@ private:
   // I am assuming same component number for each generic vertex (color, position).
   uint numberOfGenericAttributes;
   uint totalCountOfVertexComponents;
-  uint numberOfComponentsPerAttribute;
 
 public:
+  uint componentTypeLengthInBytes{sizeof(TypeOfData)};
   std::vector<TypeOfData> data = {
       -0.5, -0.5, 0.0,  // 1
       0.5,  -0.5, 0.0,  // 2
